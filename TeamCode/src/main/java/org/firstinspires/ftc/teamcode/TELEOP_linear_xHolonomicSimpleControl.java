@@ -23,6 +23,7 @@ public class TELEOP_linear_xHolonomicSimpleControl extends LinearOpMode{
         robot.init(hardwareMap);
 
         float FrontLeft, FrontRight, BackRight, BackLeft;
+        int life = 100;
 
         telemetry.addData("Status", "Initialized");
         telemetry.update();
@@ -55,10 +56,67 @@ public class TELEOP_linear_xHolonomicSimpleControl extends LinearOpMode{
             robot.rightfMotor.setPower(FrontRight);
             robot.rightbMotor.setPower(BackRight);
 
-            telemetry.addData("leftStickY: %.2f", leftStickY);
+            if (robot.touchSensorf.getValue() == 1){
+                robot.moveBack();
+                telemetry.addData("Front ", "hit!");
+                telemetry.update();
+                life = life - 25;
+                sleep(200);
+                robot.wiggle1();
+                sleep(200);
+                robot.wiggle2();
+                sleep(200);
+            }
+
+            if (robot.touchSensorb.getValue() == 1){
+                robot.moveForward();
+                telemetry.addData("Back ", "hit!");
+                telemetry.update();
+                life = life - 25;
+                sleep(200);
+                robot.wiggle1();
+                sleep(200);
+                robot.wiggle2();
+                sleep(200);
+            }
+
+            if (robot.touchSensorr.getValue() == 1){
+                robot.moveLeft();
+                telemetry.addData("Right side ", "hit!");
+                telemetry.update();
+                life = life - 25;
+                sleep(200);
+                robot.wiggle1();
+                sleep(200);
+                robot.wiggle2();
+                sleep(200);
+            }
+
+            if (robot.touchSensorl.getValue() == 1){
+                robot.moveRight();
+                telemetry.addData("Left side ", "hit!");
+                telemetry.update();
+                life = life - 25;
+                sleep(200);
+                robot.wiggle1();
+                sleep(200);
+                robot.wiggle2();
+                sleep(200);
+            }
+
+            /*telemetry.addData("leftStickY: %.2f", leftStickY);
             telemetry.addData("leftStickX: %.2f", leftStickX);
-            telemetry.addData("rightStickX: %.2f", rightStickX);
+            telemetry.addData("rightStickX: %.2f", rightStickX);*/
+            telemetry.addData("Life: ", life);
             telemetry.update();
+
+            if (life == 0) {
+                telemetry.addData("Sorry, ", "robot disabled...");
+                telemetry.update();
+                sleep(2000);
+                stop();
+            }
+
             idle(); // Always call idle() at the bottom of your while(opModeIsActive()) loop
         }
     }

@@ -66,6 +66,47 @@ public class HARDWARE_xHolonomic_demo {
 
     }
 
+    public void wiggle1() {
+        leftfMotor.setPower(-1);
+        leftbMotor.setPower(-1);
+        rightfMotor.setPower(-1);
+        rightbMotor.setPower(-1);
+    }
+
+    public void wiggle2() {
+        leftfMotor.setPower(1);
+        leftbMotor.setPower(1);
+        rightfMotor.setPower(1);
+        rightbMotor.setPower(1);
+    }
+
+    public void moveForward() {
+        leftfMotor.setPower(-1);
+        leftbMotor.setPower(-1);
+        rightfMotor.setPower(1);
+        rightbMotor.setPower(1);
+    }
+
+    public void moveBack() {
+        leftfMotor.setPower(1);
+        leftbMotor.setPower(1);
+        rightfMotor.setPower(-1);
+        rightbMotor.setPower(-1);
+    }
+
+    public void moveLeft() {
+        leftfMotor.setPower(-1);
+        leftbMotor.setPower(1);
+        rightfMotor.setPower(-1);
+        rightbMotor.setPower(1);
+    }
+
+    public void moveRight() {
+        leftfMotor.setPower(1);
+        leftbMotor.setPower(-1);
+        rightfMotor.setPower(1);
+        rightbMotor.setPower(-1);
+    }
     /***
      *
      * waitForTick implements a periodic delay. However, this acts like a metronome with a regular
