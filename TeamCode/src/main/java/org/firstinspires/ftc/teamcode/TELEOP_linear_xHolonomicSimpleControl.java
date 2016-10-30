@@ -46,10 +46,10 @@ public class TELEOP_linear_xHolonomicSimpleControl extends LinearOpMode{
             float leftStickX = -gamepad1.left_stick_x;
             float rightStickX = -gamepad1.right_stick_x;
 
-            FrontLeft = -leftStickY - leftStickX - rightStickX;
-            FrontRight = leftStickY - leftStickX - rightStickX;
-            BackLeft = -leftStickY + leftStickX - rightStickX;
-            BackRight = leftStickY + leftStickX - rightStickX;
+            FrontLeft = -leftStickY - leftStickX + rightStickX;
+            FrontRight = leftStickY - leftStickX + rightStickX;
+            BackLeft = -leftStickY + leftStickX + rightStickX;
+            BackRight = leftStickY + leftStickX + rightStickX;
 
             robot.leftfMotor.setPower(FrontLeft);
             robot.leftbMotor.setPower(BackLeft);
