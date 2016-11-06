@@ -1,12 +1,11 @@
-//By Jrodan
 package org.firstinspires.ftc.teamcode;
 
 import android.app.Activity;
 import android.graphics.Color;
 import android.view.View;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DeviceInterfaceModule;
 import com.qualcomm.robotcore.hardware.DigitalChannelController;
@@ -35,9 +34,10 @@ public class SensorMRColor_Reading extends LinearOpMode {
     // get a reference to our ColorSensor object.
     SensorRGB = hardwareMap.colorSensor.get("Sensor_RGB");
 
+
     /* turn the LED on in the beginning, just so user will know that the Sensor is
     active.*/
-    cdim.setDigitalChannelState(LED_CHANNEL, false);
+    cdim.setDigitalChannelState(LED_CHANNEL, true);
 
     // wait for the start button to be pressed.
     waitForStart();
@@ -67,14 +67,15 @@ public class SensorMRColor_Reading extends LinearOpMode {
       telemetry.addData("Green", SensorRGB.green());
       telemetry.addData("Blue ", SensorRGB.blue());
       telemetry.addData("Hue", hsvValues[0]);
-      telemetry.update();
-      relativeLayout.post(new Runnable() {
-        public void run() {
-          relativeLayout.setBackgroundColor(Color.HSVToColor(0xff, values));
-        }
-      });
 
     }
+    relativeLayout.post(new Runnable() {
+      public void run() {
+        relativeLayout.setBackgroundColor(Color.HSVToColor(0xff, values));
+      }
+    });
+
+    telemetry.update();
 
   }
 }
