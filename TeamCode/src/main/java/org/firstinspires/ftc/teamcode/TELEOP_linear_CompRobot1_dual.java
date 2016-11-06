@@ -5,9 +5,9 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@TeleOp(name="Competition TeleOp Single", group="Competition Opmode")
+@TeleOp(name="Competition TeleOp Dual", group="Competition Opmode")
 
-public class Square4wbot_controller_linear extends LinearOpMode {
+public class TELEOP_linear_CompRobot1_dual extends LinearOpMode {
 
     HARDWARE_CompRobot1 robot = new HARDWARE_CompRobot1(); //changed to new hardware file
     private ElapsedTime runtime = new ElapsedTime();
@@ -19,6 +19,7 @@ public class Square4wbot_controller_linear extends LinearOpMode {
         float FrontLeft, FrontRight, BackRight, BackLeft;
         float colDirection = 1;
         boolean colOn = false;
+        boolean pressOnwards = false;
 
         robot.legacyModule.enable9v(robot.ULTRASONIC_PORT, true);
 
@@ -65,11 +66,29 @@ public class Square4wbot_controller_linear extends LinearOpMode {
             robot.rightfDrive.setPower(FrontRight);
             robot.rightbDrive.setPower(BackRight);
 
-            /* Collecting Part
-              Press the A in gamepad1 to collect
-            */
+            //Auto-align proto code for endgame
+
+            if (gamepad1.a && getRuntime() > 30) { //getRuntime for making sure we don't use it early, check value, prob 90?
+                while(robot.ultra.getUltrasonicLevel() < 1000){ //change ultra value plz!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                    robot.moveRight();
+                }
+                robot.stopMoving();
+            }
+
+            //straight forward
+            if (gamepad1.right_trigger < 0.2) {pressOnwards = true;}
+            if (pressOnwards) {
+                robot.moveForward();
+            }
+            //for some fast stops
+            if (gamepad1.right_trigger > 0.2) {
+                robot.stopMoving();
+                pressOnwards = false;
+            }
+
+
             //----------------------------------------------------------
-            if (gamepad1.right_bumper)
+            if (gamepad2.right_bumper)
             {
                 colOn = true;
                 colDirection = 1;
@@ -77,11 +96,11 @@ public class Square4wbot_controller_linear extends LinearOpMode {
                 telemetry.update();*/
             }
 
-            if (gamepad1.right_trigger > 0.2){
+            if (gamepad2.right_trigger > 0.2){
                 colOn = false;
             }
 
-            if (gamepad1.b){
+            if (gamepad2.b){
                     colDirection = -1;
             }
 
@@ -96,7 +115,7 @@ public class Square4wbot_controller_linear extends LinearOpMode {
                the Shotting motor rotate in 1 circulation
              */
 
-            if (gamepad1.left_bumper)
+            if (gamepad2.left_bumper)
             {
                 /*robot.SMotor.setPower(1);
                 robot.SMotor.getCurrentPosition();
@@ -111,16 +130,16 @@ public class Square4wbot_controller_linear extends LinearOpMode {
             oh boy I can't sleep
              */
 
-            if (gamepad1.a){
+            if (gamepad2.a){
                 robot.beaconer.setPosition(robot.MID_SERVO);
                 //telemetry.addData("Moving", "servo!");
             }
 
-            if (gamepad1.x){
+            if (gamepad2.x){
                 robot.beaconer.setPosition(robot.START_SERVO);
             }
 
-            if (gamepad1.y) {
+            if (gamepad2.y) {
                 robot.beaconer.setPosition(robot.FAR_SERVO);
             }
 

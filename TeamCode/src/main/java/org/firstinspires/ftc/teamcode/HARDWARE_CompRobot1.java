@@ -2,8 +2,10 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.LegacyModule;
 import com.qualcomm.robotcore.hardware.OpticalDistanceSensor;
 import com.qualcomm.robotcore.hardware.LightSensor;
+import com.qualcomm.robotcore.hardware.UltrasonicSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -26,9 +28,19 @@ public class HARDWARE_CompRobot1 {
     public OpticalDistanceSensor ods = null;
     public LightSensor LegoLight = null;
     public ColorSensor sensorRGB = null;
+    public LegacyModule legacyModule = null;
+    public UltrasonicSensor ultra = null;
 
-    public static final double MID_SERVO       =  0.5 ;
-    public static final double START_SERVO     =  0;
+    //for ultrasonic
+    int ULTRASONIC_PORT = 4;
+
+    public static final double MID_SERVO       =  0.4;
+    public static final double CLOSE_SERVO     =  0.3;
+    public static final double START_SERVO     =  0.8;
+    public static final double FAR_SERVO       =  -0.1;
+
+    public static final double closerValue     =  100; //CHANGE THESE
+    public static final double fartherValue    =  200;
 
     /* local OpMode members. */
     HardwareMap hwMap           =  null;
@@ -57,6 +69,9 @@ public class HARDWARE_CompRobot1 {
         ods = hwMap.opticalDistanceSensor.get("Sensor_ODS");
         LegoLight = hwMap.lightSensor.get("Sensor_LegoLight");
         sensorRGB = hwMap.colorSensor.get("sensor_color");
+
+        legacyModule = hwMap.legacyModule.get("legacy");
+        ultra = hwMap.ultrasonicSensor.get("ultra");
 
         /*leftfDrive.setDirection(DcMotor.Direction.REVERSE);
         rightfDrive.setDirection(DcMotor.Direction.FORWARD);
@@ -113,6 +128,13 @@ public class HARDWARE_CompRobot1 {
         leftbDrive.setPower(-1);
         rightfDrive.setPower(1);
         rightbDrive.setPower(-1);
+    }
+
+    public void stopMoving() {
+        leftfDrive.setPower(0);
+        leftbDrive.setPower(0);
+        rightfDrive.setPower(0);
+        rightbDrive.setPower(0);
     }
 
     public void Shoot() {

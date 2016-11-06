@@ -1,4 +1,4 @@
-//By Jrodan
+//By Jordan
 package org.firstinspires.ftc.teamcode;
 
 import android.app.Activity;
@@ -15,29 +15,12 @@ import com.qualcomm.robotcore.hardware.DigitalChannelController;
 @Autonomous(name = "Sensor: Sensor RGB", group = "Sensor")
 public class SensorMRColor_Reading extends LinearOpMode {
 
-  ColorSensor SensorRGB;
-  DeviceInterfaceModule cdim;
+  HARDWARE_CompRobot1 robot = new HARDWARE_CompRobot1(); //changed to new hardware file
   static final int LED_CHANNEL = 5;
 
   @Override
   public void runOpMode() throws InterruptedException {
-
-    hardwareMap.logDevices();
-
-    // get refference to the DeviceInterfaceModule
-    cdim = hardwareMap.deviceInterfaceModule.get("dim");
-
-    // set the digital channel to output mode.
-    // remember, the AdaFruit Sensor is actually two devices.
-    // It's an I2C Sensor and it's also an LED that can be turned on or off.
-    cdim.setDigitalChannelMode(LED_CHANNEL, DigitalChannelController.Mode.OUTPUT);
-
-    // get a reference to our ColorSensor object.
-    SensorRGB = hardwareMap.colorSensor.get("Sensor_RGB");
-
-    /* turn the LED on in the beginning, just so user will know that the Sensor is
-    active.*/
-    cdim.setDigitalChannelState(LED_CHANNEL, false);
+    robot.init(hardwareMap);
 
     // wait for the start button to be pressed.
     waitForStart();
@@ -59,13 +42,13 @@ public class SensorMRColor_Reading extends LinearOpMode {
     while (opModeIsActive()) {
 
       // convert the RGB values to HSV values.
-      Color.RGBToHSV((SensorRGB.red() * 255) / 800, (SensorRGB.green() * 255) / 800, (SensorRGB.blue() * 255) / 800, hsvValues);
+      Color.RGBToHSV((robot.sensorRGB.red() * 255) / 800, (robot.sensorRGB.green() * 255) / 800, (robot.sensorRGB.blue() * 255) / 800, hsvValues);
 
       // send the info back to driver station using telemetry function.
-      telemetry.addData("Clear", SensorRGB.alpha());
-      telemetry.addData("Red ", SensorRGB.red());
-      telemetry.addData("Green", SensorRGB.green());
-      telemetry.addData("Blue ", SensorRGB.blue());
+      telemetry.addData("Clear", robot.sensorRGB.alpha());
+      telemetry.addData("Red ", robot.sensorRGB.red());
+      telemetry.addData("Green", robot.sensorRGB.green());
+      telemetry.addData("Blue ", robot.sensorRGB.blue());
       telemetry.addData("Hue", hsvValues[0]);
       telemetry.update();
       relativeLayout.post(new Runnable() {
