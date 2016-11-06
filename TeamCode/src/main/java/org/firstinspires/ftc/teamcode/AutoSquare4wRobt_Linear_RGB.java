@@ -1,4 +1,4 @@
-//By Jrodan
+//By Jordan
 package org.firstinspires.ftc.teamcode;
 
 import android.app.Activity;
@@ -12,15 +12,25 @@ import com.qualcomm.robotcore.hardware.DeviceInterfaceModule;
 import com.qualcomm.robotcore.hardware.DigitalChannelController;
 
 
-@Autonomous(name = "Sensor: Sensor RGB", group = "Sensor")
-public class SensorMRColor_Reading extends LinearOpMode {
+@Autonomous(name = "Squarebot Linear by Sensor_RGB", group = "Squarebot")
+public class AutoSquare4wRobt_Linear_RGB extends LinearOpMode {
+
+  Sqarebot         robot   = new Sqarebot();
 
   ColorSensor SensorRGB;
   DeviceInterfaceModule cdim;
+
+  int                     red =  SensorRGB.red();
+  int                     blue = SensorRGB.blue();
+
   static final int LED_CHANNEL = 5;
+  static final double     FORWARD_SPEED = 0.3;
+
 
   @Override
   public void runOpMode() throws InterruptedException {
+
+    robot.init(hardwareMap);
 
     hardwareMap.logDevices();
 
@@ -35,9 +45,13 @@ public class SensorMRColor_Reading extends LinearOpMode {
     // get a reference to our ColorSensor object.
     SensorRGB = hardwareMap.colorSensor.get("Sensor_RGB");
 
+    // bEnabled represents the state of the LED.
+    boolean bEnabled = true;
+
     /* turn the LED on in the beginning, just so user will know that the Sensor is
     active.*/
-    cdim.setDigitalChannelState(LED_CHANNEL, false);
+    cdim.setDigitalChannelState(LED_CHANNEL, bEnabled);
+
 
     // wait for the start button to be pressed.
     waitForStart();
@@ -56,24 +70,31 @@ public class SensorMRColor_Reading extends LinearOpMode {
     // while the op mode is active, loop and read the RGB data.
     /* Note we use opModeIsActive() as our loop condition because it is an interruptible
     method*/
+
     while (opModeIsActive()) {
 
-      // convert the RGB values to HSV values.
       Color.RGBToHSV((SensorRGB.red() * 255) / 800, (SensorRGB.green() * 255) / 800, (SensorRGB.blue() * 255) / 800, hsvValues);
-
-      // send the info back to driver station using telemetry function.
-      telemetry.addData("Clear", SensorRGB.alpha());
-      telemetry.addData("Red ", SensorRGB.red());
-      telemetry.addData("Green", SensorRGB.green());
-      telemetry.addData("Blue ", SensorRGB.blue());
-      telemetry.addData("Hue", hsvValues[0]);
-      telemetry.update();
       relativeLayout.post(new Runnable() {
         public void run() {
           relativeLayout.setBackgroundColor(Color.HSVToColor(0xff, values));
         }
       });
+      if (red <= 1000 || blue <= 1200) {
+        robot.LMotor1.setPower(FORWARD_SPEED);
+        robot.LMotor2.setPower(FORWARD_SPEED);
+        robot.RMotor1.setPower(FORWARD_SPEED);
+        robot.RMotor2.setPower(FORWARD_SPEED);
+      }
+      else
+      {
+        robot.LMotor1.setPower(0);
+        robot.LMotor2.setPower(0);
+        robot.RMotor1.setPower(0);
+        robot.RMotor2.setPower(0);
 
+        robot.Finger.setPosition(1);
+
+      }
     }
 
   }
