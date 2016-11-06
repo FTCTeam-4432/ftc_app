@@ -30,6 +30,7 @@ public class HARDWARE_CompRobot1 {
     public ColorSensor sensorRGB = null;
     public LegacyModule legacyModule = null;
     public UltrasonicSensor ultra = null;
+    public UltrasonicSensor ultra1 = null;
 
     //for ultrasonic
     int ULTRASONIC_PORT = 4;
@@ -72,6 +73,7 @@ public class HARDWARE_CompRobot1 {
 
         legacyModule = hwMap.legacyModule.get("legacy");
         ultra = hwMap.ultrasonicSensor.get("ultra");
+        ultra1 = hwMap.ultrasonicSensor.get("ultra1");
 
         /*leftfDrive.setDirection(DcMotor.Direction.REVERSE);
         rightfDrive.setDirection(DcMotor.Direction.FORWARD);
@@ -97,8 +99,6 @@ public class HARDWARE_CompRobot1 {
         rightbDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         CMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         SMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-
 
     }
 
@@ -137,6 +137,13 @@ public class HARDWARE_CompRobot1 {
         rightbDrive.setPower(0);
     }
 
+    public void turnBot(double speed) {
+        leftfDrive.setPower(speed);
+        leftbDrive.setPower(speed);
+        rightfDrive.setPower(speed);
+        rightbDrive.setPower(speed);
+    }
+
     public void Shoot() {
         SMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         SMotor.setTargetPosition(1120);
@@ -147,6 +154,21 @@ public class HARDWARE_CompRobot1 {
         }
         SMotor.setPower(0);
         SMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
+
+    public void levelWithWall (){ //use when within fartherValue with wall
+        if (ultra.getUltrasonicLevel() > ultra1.getUltrasonicLevel()) {
+            while (ultra.getUltrasonicLevel() > ultra1.getUltrasonicLevel()){
+                turnBot(0.2); //turn robot;
+            }
+            stopMoving();
+        }
+        if (ultra.getUltrasonicLevel() < ultra1.getUltrasonicLevel()){
+            while (ultra.getUltrasonicLevel() < ultra1.getUltrasonicLevel()){
+                turnBot(-0.2); //turn robot other way;
+            }
+            stopMoving();
+        }
     }
     /***
      *
