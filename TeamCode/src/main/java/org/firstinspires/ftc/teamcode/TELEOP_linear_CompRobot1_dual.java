@@ -66,13 +66,14 @@ public class TELEOP_linear_CompRobot1_dual extends LinearOpMode {
             robot.rightfDrive.setPower(FrontRight);
             robot.rightbDrive.setPower(BackRight);
 
-            //Auto-align proto code for endgame
+            //Auto-drive proto code for endgame
 
             if (gamepad1.a && getRuntime() > 30) { //getRuntime for making sure we don't use it early, check value, prob 90?
                 while(robot.ultra.getUltrasonicLevel() < 1000){ //change ultra value plz!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                     robot.moveRight();
                 }
                 robot.stopMoving();
+                robot.levelWithWall(); //whoooo
             }
 
             //straight forward

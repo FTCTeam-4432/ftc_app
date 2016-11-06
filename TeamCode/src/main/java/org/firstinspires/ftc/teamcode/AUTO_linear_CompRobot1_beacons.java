@@ -82,6 +82,8 @@ public class AUTO_linear_CompRobot1_beacons extends LinearOpMode {
                 //do nothing
                 sleep(5);
             }
+            robot.stopMoving();
+            robot.levelWithWall(); //whooo I HOPE THIS WORKS
 
             //--------------------------First beacon--------------------------
             robot.moveForward();
